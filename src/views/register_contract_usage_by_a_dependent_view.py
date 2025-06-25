@@ -2,21 +2,10 @@ from models.holder import Holder
 from models.dependent import Dependent
 from models.contract import Contract
 from models.usage_contract_dependent import UsageContractDependent
-from helpers.graphics import clear_screen, print_header
-
-from models.holder import Holder
-from models.dependent import Dependent
-from models.contract import Contract
-from models.usage_contract_dependent import UsageContractDependent
 from models.usage_contract_holder import UsageContractHolder
-from helpers.graphics import clear_screen, print_header
 
-from models.holder import Holder
-from models.dependent import Dependent
-from models.contract import Contract
-from models.usage_contract_dependent import UsageContractDependent
-from models.usage_contract_holder import UsageContractHolder
 from helpers.graphics import clear_screen, print_header
+from helpers.validations import validate_date
 
 def register_contract_usage_by_a_dependent_view():
 
@@ -144,12 +133,15 @@ def register_contract_usage_by_a_dependent_view():
             selected_contract = next(c for c in contracts if c.id == contract_id)
             break
 
-        usage_date = input("\n📅 Data do uso (dd/mm/aaaa): ").strip()
-        if usage_date == r"\c":
-            print("\n✖️ Operação cancelada")
-            #input("Pressione Enter para continuar...")
-            return
-        # opcional: validar formato da data
+        while True:
+            usage_date = input("\n📅 Data do uso (dd/mm/aaaa): ").strip()
+            if usage_date == r"\c":
+                #print("\n✖️ Operação cancelada")
+                return
+            if not validate_date(usage_date):
+                print("\n❌ Data inválida. Use o formato dd/mm/aaaa.")
+                continue
+            break
 
         usage = UsageContractDependent(
             dependent_id=dependent_id,
