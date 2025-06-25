@@ -28,9 +28,9 @@ class View:
             print("║ {:<2} - {:<54}║".format("1",       "Criar novo titular"))
             print("║ {:<2} - {:<54}║".format("2",       "Criar dependente"))
             print("║ {:<2} - {:<54}║".format("3",       "Criar plano"))
-            print("║ {:<2} - {:<54}║".format("4",       "Editar titular"))
-            print("║ {:<2} - {:<54}║".format("5",       "Editar Plano"))
-            print("║ {:<2} - {:<54}║".format("6",       "Criar contrato"))
+            print("║ {:<2} - {:<54}║".format("4",       "Criar contrato"))
+            print("║ {:<2} - {:<54}║".format("5",       "Editar titular"))
+            print("║ {:<2} - {:<54}║".format("6",       "Editar Plano"))
             print("║ {:<2} - {:<54}║".format("7",       "Listar titulares"))
             print("║ {:<2} - {:<54}║".format("8",       "Listar dependentes de um titular"))
             print("║ {:<2} - {:<54}║".format("9",       "Listar contratos de um titular"))
@@ -49,11 +49,11 @@ class View:
             elif option == '3':
                 create_plan_view()
             elif option == '4':
-                edit_plan_view()
-            elif option == '5':
-                edit_holder_view()
-            elif option == '6':
                 create_contract_view()
+            elif option == '5':
+                edit_plan_view()
+            elif option == '6':
+                edit_holder_view()
             elif option == '7':
                 list_holders_view()
             elif option == '8':
