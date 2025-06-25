@@ -17,6 +17,10 @@ def create_plan_view():
             input("Pressione Enter para tentar novamente...")
             continue
 
+        clear_screen()
+        print_header("🔹 [3] Criar plano", "Cadastre um modelo genérico de plano com valor e parcelas.")
+        print(f"Nome do plano: {name}")
+
         preco_str = input("➡️ Preço da mensalidade (R$): ").strip().replace(',', '.')
         if preco_str == r"\c":
             print("\n✖️ Operação cancelada")
@@ -30,6 +34,11 @@ def create_plan_view():
             print("❌ Preço inválido. Informe um número maior que zero.")
             input("Pressione Enter para tentar novamente...")
             continue
+
+        clear_screen()
+        print_header("🔹 [3] Criar plano", "Cadastre um modelo genérico de plano com valor e parcelas.")
+        print(f"Nome do plano: {name}")
+        print(f"Preço da mensalidade: R$ {preco:.2f}")
 
         parcelas_str = input("➡️ Quantidade de parcelas: ").strip()
         if parcelas_str == r"\c":
@@ -45,6 +54,8 @@ def create_plan_view():
             input("Pressione Enter para tentar novamente...")
             continue
 
+        clear_screen()
+        print_header("🔹 [3] Criar plano", "Cadastre um modelo genérico de plano com valor e parcelas.")
         print(f"\n📋 Confirmar os dados abaixo:\n")
         print(f"Nome do plano: {name}")
         print(f"Preço da mensalidade: R$ {preco:.2f}")

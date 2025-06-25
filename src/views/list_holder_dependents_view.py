@@ -2,7 +2,6 @@ from models.holder import Holder
 from models.dependent import Dependent
 from helpers.graphics import clear_screen, print_header
 
-
 def list_holder_dependents_view():
     while True:
         clear_screen()
@@ -20,6 +19,9 @@ def list_holder_dependents_view():
             print("\n❌ Nenhum titular encontrado com esse nome.")
             input("Pressione Enter para tentar novamente...")
             continue
+
+        clear_screen()
+        print_header("🔹 [6] Listar dependentes de um titular", "Titulares encontrados:")
 
         print("\n📋 Titulares encontrados:")
         for holder in holders:
@@ -45,6 +47,9 @@ def list_holder_dependents_view():
             continue
 
         dependents = Dependent.list_by_holder(holder_id)
+
+        clear_screen()
+        print_header("🔹 [6] Listar dependentes de um titular", f"Dependentes de {selected_holder.name}:")
 
         print(f"\n👨\u200d👧 Dependentes de {selected_holder.name}:")
         if not dependents:

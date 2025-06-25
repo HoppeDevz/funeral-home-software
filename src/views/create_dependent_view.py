@@ -3,7 +3,6 @@ from models.dependent import Dependent
 from helpers.graphics import clear_screen, print_header
 
 def create_dependent_view():
-        
     while True:
         clear_screen()
         print_header("🔹 [2] Criar dependente", "Associe um novo dependente a um titular já cadastrado.")
@@ -15,12 +14,13 @@ def create_dependent_view():
             return
 
         holders = Holder.search_by_name(query)
-
         if not holders:
             print("❌ Nenhum titular encontrado com esse nome.")
             input("Pressione Enter para tentar novamente...")
             continue
 
+        clear_screen()
+        print_header("🔹 [2] Criar dependente", "Associe um novo dependente a um titular já cadastrado.")
         print("\n📋 Titulares encontrados:")
         for holder in holders:
             print(f"[{holder.id}] {holder.name}")
@@ -43,6 +43,10 @@ def create_dependent_view():
             print("❌ Titular não encontrado na lista.")
             input("Pressione Enter para tentar novamente...")
             continue
+
+        clear_screen()
+        print_header("🔹 [2] Criar dependente", "Associe um novo dependente a um titular já cadastrado.")
+        print(f"\nTitular selecionado: {selected_holder.name}")
 
         name = input("\n➡️ Nome completo do dependente: ").strip()
         if name == r"\c":

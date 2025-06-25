@@ -19,13 +19,14 @@ def register_contract_usage_by_a_holder_view():
             return
 
         holders = Holder.search_by_name(query)
-
         if not holders:
             print("\n❌ Nenhum titular encontrado com esse nome.")
             input("Pressione Enter para tentar novamente...")
             continue
 
-        print("\n📋 Titulares encontrados:")
+        clear_screen()
+        print_header("🔹 [10] Registrar uso de contrato por titular", "Titulares encontrados:")
+
         for holder in holders:
             print(f"[{holder.id}] {holder.name}")
 
@@ -54,10 +55,9 @@ def register_contract_usage_by_a_holder_view():
             input("Pressione Enter para voltar...")
             return
 
-        # Prepara um dicionário para saber se contrato foi usado
-        contract_usage_map = {}
         dependents_by_id = {d.id: d.name for d in Dependent.list_by_holder(holder_id)}
 
+        contract_usage_map = {}
         for contract in contracts:
             usage_holder = UsageContractHolder.list_by_contract(contract.id)
             usage_dependents = UsageContractDependent.list_by_contract(contract.id)
@@ -70,7 +70,8 @@ def register_contract_usage_by_a_holder_view():
             else:
                 contract_usage_map[contract.id] = None
 
-        print(f"\n📄 Contratos do titular {selected_holder.name}:")
+        clear_screen()
+        print_header("🔹 [10] Registrar uso de contrato por titular", f"Contratos do titular {selected_holder.name}:")
 
         for contract in contracts:
             usage_msg = contract_usage_map.get(contract.id)
@@ -107,6 +108,7 @@ def register_contract_usage_by_a_holder_view():
             usage_date = input("\n📅 Data do uso (dd/mm/aaaa): ").strip()
             if usage_date == r"\c":
                 print("\n✖️ Operação cancelada.")
+                #input("Pressione Enter para continuar...")
                 return
             if not validate_date(usage_date):
                 print("\n❌ Data inválida. Use o formato dd/mm/aaaa.")

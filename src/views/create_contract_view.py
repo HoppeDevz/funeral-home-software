@@ -22,6 +22,8 @@ def create_contract_view():
             input("Pressione Enter para tentar novamente...")
             continue
 
+        clear_screen()
+        print_header("🔹 [4] Criar contrato", "Selecione um titular e um plano para gerar um novo contrato.")
         print("\n📋 Titulares encontrados:")
         for h in holders:
             print(f"[{h.id}] {h.name}")
@@ -52,6 +54,8 @@ def create_contract_view():
             input("Pressione Enter para voltar...")
             return
 
+        clear_screen()
+        print_header("🔹 [4] Criar contrato", "Selecione um titular e um plano para gerar um novo contrato.")
         print("\n📋 Planos disponíveis:")
         for p in plans:
             print(f"[{p.id}] {p.name} - R$ {p.monthly_price:.2f}")
@@ -107,9 +111,8 @@ def create_contract_view():
             input("Pressione Enter para tentar novamente...")
             continue
 
-        # Confirmar dados
         clear_screen()
-        print("📋 Confirmar os dados abaixo:\n")
+        print_header("🔹 [4] Criar contrato", "Confirme os dados abaixo")
         print(f"Titular: {selected_holder.name}")
         print(f"Plano: {selected_plan.name} - R$ {selected_plan.monthly_price:.2f}")
         print(f"Dia do pagamento: {due_day}")

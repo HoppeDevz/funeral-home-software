@@ -18,11 +18,13 @@ def list_holder_contracts_view():
             return
 
         holders = Holder.search_by_name(query)
-
         if not holders:
             print("❌ Nenhum titular encontrado.")
             input("Pressione Enter para tentar novamente...")
             continue
+
+        clear_screen()
+        print_header("🔹 [7] Listar contratos de um titular", "Titulares encontrados:")
 
         print("\n📋 Titulares encontrados:")
         for holder in holders:
@@ -49,15 +51,19 @@ def list_holder_contracts_view():
 
         contracts = Contract.list_by_holder(holder_id)
 
+        clear_screen()
+        print_header("🔹 [7] Listar contratos de um titular", f"Contratos de {selected_holder.name}:")
+
         print(f"\n📄 Contratos de {selected_holder.name}:")
         if not contracts:
             print("Nenhum contrato encontrado para este titular.")
         else:
+            dependents_by_id = {d.id: d.name for d in Dependent.list_by_holder(holder_id)}
+
             for idx, contract in enumerate(contracts, 1):
                 plan = Plan.get_by_id(contract.plan_id)
                 usage_holder = UsageContractHolder.list_by_contract(contract.id)
                 usage_dependents = UsageContractDependent.list_by_contract(contract.id)
-                dependents_by_id = {d.id: d.name for d in Dependent.list_by_holder(holder_id)}
 
                 print(f"[{idx}] Plano: {plan.name} - R$ {float(plan.monthly_price):.2f}")
                 print(f"    Dia do pagamento: {contract.payment_day}")
@@ -67,13 +73,14 @@ def list_holder_contracts_view():
                 if usage_holder or usage_dependents:
                     print("    Foi usado: Sim")
                     print("    Usuários que usaram:")
+
                     if usage_holder:
                         print(f"      - Titular ({usage_holder.usage_date})")
-                            
+
                     if usage_dependents:
                         name = dependents_by_id.get(usage_dependents.dependent_id, "Dependente desconhecido")
                         print(f"      - {name} (dependente) ({usage_dependents.usage_date})")
-                            
+
                 else:
                     print("    Foi usado: Não")
                 print()

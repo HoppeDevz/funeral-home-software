@@ -20,13 +20,14 @@ def register_contract_usage_by_a_dependent_view():
             return
 
         holders = Holder.search_by_name(query)
-
         if not holders:
             print("\n❌ Nenhum titular encontrado com esse nome.")
             input("Pressione Enter para tentar novamente...")
             continue
 
-        print("\n📋 Titulares encontrados:")
+        clear_screen()
+        print_header("🔹 [9] Registrar uso de contrato por dependente", "Titulares encontrados:")
+
         for holder in holders:
             print(f"[{holder.id}] {holder.name}")
 
@@ -50,13 +51,14 @@ def register_contract_usage_by_a_dependent_view():
             continue
 
         dependents = Dependent.list_by_holder(holder_id)
-
         if not dependents:
             print(f"\n❌ Nenhum dependente encontrado para o titular {selected_holder.name}.")
             input("Pressione Enter para voltar...")
             return
 
-        print(f"\n👨‍👧 Dependentes de {selected_holder.name}:")
+        clear_screen()
+        print_header("🔹 [9] Registrar uso de contrato por dependente", f"Dependentes de {selected_holder.name}:")
+
         for d in dependents:
             print(f"[{d.id}] {d.name}")
 
@@ -80,7 +82,6 @@ def register_contract_usage_by_a_dependent_view():
             continue
 
         contracts = Contract.list_by_holder(holder_id)
-
         if not contracts:
             print(f"\n❌ Nenhum contrato encontrado para o titular {selected_holder.name}.")
             input("Pressione Enter para voltar...")
@@ -95,13 +96,13 @@ def register_contract_usage_by_a_dependent_view():
             if usage_holder:
                 contract_usage_map[contract.id] = f"Já usado pelo titular {usage_holder.holder_name}"
             elif usage_dependents:
-                # Pode listar múltiplos dependentes? Aqui pega só o último uso
-                # Para simplicidade, mostra que foi usado por algum dependente
                 contract_usage_map[contract.id] = f"Já usado por dependente"
             else:
                 contract_usage_map[contract.id] = None
 
-        print(f"\n📄 Contratos do titular {selected_holder.name}:")
+        clear_screen()
+        print_header("🔹 [9] Registrar uso de contrato por dependente", f"Contratos do titular {selected_holder.name}:")
+
         for c in contracts:
             usage_msg = contract_usage_map.get(c.id)
             if usage_msg:
@@ -136,7 +137,8 @@ def register_contract_usage_by_a_dependent_view():
         while True:
             usage_date = input("\n📅 Data do uso (dd/mm/aaaa): ").strip()
             if usage_date == r"\c":
-                #print("\n✖️ Operação cancelada")
+                print("\n✖️ Operação cancelada")
+                #input("Pressione Enter para continuar...")
                 return
             if not validate_date(usage_date):
                 print("\n❌ Data inválida. Use o formato dd/mm/aaaa.")
@@ -153,4 +155,3 @@ def register_contract_usage_by_a_dependent_view():
         print("\n✔️ Uso registrado com sucesso.")
         input("\nPressione Enter para continuar...")
         break
-

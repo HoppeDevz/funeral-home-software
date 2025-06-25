@@ -29,7 +29,7 @@ class View:
             print("║ {:<2} - {:<54}║".format("8",   "Dar baixa em parcelas de um contrato"))
             print("║ {:<2} - {:<54}║".format("9",   "Registrar uso de contrato por dependente"))
             print("║ {:<2} - {:<54}║".format("10",  "Registrar uso de contrato por titular"))
-            print("║ {:<2} - {:<54}║".format("0",   "Sair"))
+            #print("║ {:<2} - {:<54}║".format("0",   "Sair"))
             print("╚" + "═" * 60 + "╝")
 
             option = input("\nEscolha uma opção: ").strip()
@@ -54,9 +54,9 @@ class View:
                 register_contract_usage_by_a_dependent_view()
             elif option == '10':
                 register_contract_usage_by_a_holder_view()
-            elif option == '0':
-                print("\nSaindo... Até mais!")
-                break
+            #elif option == '0':
+                #print("\nSaindo... Até mais!")
+                #break
             else:
                 print("\nOpção inválida, tente novamente.")
                 input("Pressione Enter para continuar...")
