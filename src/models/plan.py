@@ -46,11 +46,25 @@ class Plan:
         return None
 
     @staticmethod
-    def update(plan):
+    def search_by_name(plan_name):
+        db = Database()
+        rows = db.fetchall("SELECT * FROM plan WHERE NAME LIKE ? ORDER BY name", (f"%{plan_name}%",))
+        db.close()
+        plans = []
+        for row in rows:
+            plans.append(Plan(
+                id=row["id"],
+                name=row["name"],
+                monthly_price=row["monthly_price"],
+                installment_count=row["installment_count"]
+            ))
+        return plans
+
+    def update(self):
         db = Database()
         db.execute("""
             UPDATE plan SET name = ?, monthly_price = ?, installment_count = ? WHERE id = ?
-        """, (plan.name, plan.monthly_price, plan.installment_count, plan.id), commit=True)
+        """, (self.name, self.monthly_price, self.installment_count, self.id), commit=True)
         db.close()
 
     @staticmethod

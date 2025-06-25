@@ -75,8 +75,7 @@ class Holder:
             ))
         return holders
 
-    @staticmethod
-    def update(holder):
+    def update(self):
         db = Database()
         db.execute("""
             UPDATE holder SET
@@ -92,9 +91,9 @@ class Holder:
                 phone = ?
             WHERE id = ?
         """, (
-            holder.name, holder.birth_date, holder.marital_status, holder.cpf, holder.rg,
-            holder.address, holder.neighborhood, holder.zipcode, holder.city, holder.phone,
-            holder.id
+            self.name, self.birth_date, self.marital_status, self.cpf, self.rg,
+            self.address, self.neighborhood, self.zipcode, self.city, self.phone,
+            self.id
         ), commit=True)
         db.close()
 
