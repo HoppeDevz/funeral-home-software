@@ -11,7 +11,7 @@ def register_contract_usage_by_a_dependent_view():
 
     while True:
         clear_screen()
-        print_header("🔹 [9] Registrar uso de contrato por dependente", "Registre o uso do contrato por um dependente")
+        print_header("🔹 [12] Registrar uso de contrato por dependente", "Registre o uso do contrato por um dependente")
 
         query = input("➡️ Digite o nome (ou parte do nome) do titular: ").strip()
         if query == r"\c":
@@ -26,7 +26,7 @@ def register_contract_usage_by_a_dependent_view():
             continue
 
         clear_screen()
-        print_header("🔹 [9] Registrar uso de contrato por dependente", "Titulares encontrados:")
+        print_header("🔹 [12] Registrar uso de contrato por dependente", "Titulares encontrados:")
 
         for holder in holders:
             print(f"[{holder.id}] {holder.name}")
@@ -57,7 +57,7 @@ def register_contract_usage_by_a_dependent_view():
             return
 
         clear_screen()
-        print_header("🔹 [9] Registrar uso de contrato por dependente", f"Dependentes de {selected_holder.name}:")
+        print_header("🔹 [12] Registrar uso de contrato por dependente", f"Dependentes de {selected_holder.name}:")
 
         for d in dependents:
             print(f"[{d.id}] {d.name}")
@@ -101,7 +101,7 @@ def register_contract_usage_by_a_dependent_view():
                 contract_usage_map[contract.id] = None
 
         clear_screen()
-        print_header("🔹 [9] Registrar uso de contrato por dependente", f"Contratos do titular {selected_holder.name}:")
+        print_header("🔹 [12] Registrar uso de contrato por dependente", f"Contratos do titular {selected_holder.name}:")
 
         for c in contracts:
             usage_msg = contract_usage_map.get(c.id)

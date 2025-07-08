@@ -8,7 +8,7 @@ def format_cpf(cpf: str) -> str:
 def list_holders_view():
     while True:
         clear_screen()
-        print_header("🔹 [5] Listar titulares", "Filtra e exibe titulares cadastrados pelo nome.")
+        print_header("🔹 [7] Listar titulares", "Filtra e exibe titulares cadastrados pelo nome.")
 
         query = input("➡️ Digite o nome (ou parte do nome) do titular: ").strip()
         if query == r"\c":

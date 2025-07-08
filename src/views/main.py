@@ -18,6 +18,8 @@ from views.register_contract_usage_by_a_holder_view import register_contract_usa
 from views.edit_plan_view import edit_plan_view
 from views.edit_holder_view import edit_holder_view
 
+from views.print_contract_view import print_contract_view
+
 
 class View:
     @staticmethod
@@ -55,9 +57,9 @@ class View:
             elif option == '4':
                 create_contract_view()
             elif option == '5':
-                edit_plan_view()
-            elif option == '6':
                 edit_holder_view()
+            elif option == '6':
+                edit_plan_view()
             elif option == '7':
                 list_holders_view()
             elif option == '8':
@@ -72,6 +74,8 @@ class View:
                 register_contract_usage_by_a_dependent_view()
             elif option == '13':
                 register_contract_usage_by_a_holder_view()
+            elif option == '14':
+                print_contract_view()
             
             else:
                 print("\nOpção inválida, tente novamente.")

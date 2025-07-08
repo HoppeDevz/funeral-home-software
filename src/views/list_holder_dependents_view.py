@@ -5,7 +5,7 @@ from helpers.graphics import clear_screen, print_header
 def list_holder_dependents_view():
     while True:
         clear_screen()
-        print_header("🔹 [6] Listar dependentes de um titular", "Informe o nome para localizar o titular.")
+        print_header("🔹 [8] Listar dependentes de um titular", "Informe o nome para localizar o titular.")
 
         query = input("➡️ Digite o nome (ou parte do nome) do titular: ").strip()
         if query == r"\c":
@@ -21,7 +21,7 @@ def list_holder_dependents_view():
             continue
 
         clear_screen()
-        print_header("🔹 [6] Listar dependentes de um titular", "Titulares encontrados:")
+        print_header("🔹 [8] Listar dependentes de um titular", "Titulares encontrados:")
 
         print("\n📋 Titulares encontrados:")
         for holder in holders:
@@ -49,7 +49,7 @@ def list_holder_dependents_view():
         dependents = Dependent.list_by_holder(holder_id)
 
         clear_screen()
-        print_header("🔹 [6] Listar dependentes de um titular", f"Dependentes de {selected_holder.name}:")
+        print_header("🔹 [8] Listar dependentes de um titular", f"Dependentes de {selected_holder.name}:")
 
         print(f"\n👨\u200d👧 Dependentes de {selected_holder.name}:")
         if not dependents:

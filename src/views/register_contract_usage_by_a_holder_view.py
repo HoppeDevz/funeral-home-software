@@ -10,7 +10,7 @@ from helpers.validations import validate_date
 def register_contract_usage_by_a_holder_view():
     while True:
         clear_screen()
-        print_header("🔹 [10] Registrar uso de contrato por titular", "Registre o uso do contrato pelo titular")
+        print_header("🔹 [13] Registrar uso de contrato por titular", "Registre o uso do contrato pelo titular")
 
         query = input("➡️ Digite o nome (ou parte do nome) do titular: ").strip()
         if query == r"\c":
@@ -25,7 +25,7 @@ def register_contract_usage_by_a_holder_view():
             continue
 
         clear_screen()
-        print_header("🔹 [10] Registrar uso de contrato por titular", "Titulares encontrados:")
+        print_header("🔹 [13] Registrar uso de contrato por titular", "Titulares encontrados:")
 
         for holder in holders:
             print(f"[{holder.id}] {holder.name}")
@@ -71,7 +71,7 @@ def register_contract_usage_by_a_holder_view():
                 contract_usage_map[contract.id] = None
 
         clear_screen()
-        print_header("🔹 [10] Registrar uso de contrato por titular", f"Contratos do titular {selected_holder.name}:")
+        print_header("🔹 [13] Registrar uso de contrato por titular", f"Contratos do titular {selected_holder.name}:")
 
         for contract in contracts:
             usage_msg = contract_usage_map.get(contract.id)

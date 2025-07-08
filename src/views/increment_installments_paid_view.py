@@ -6,7 +6,7 @@ def increment_installments_paid_view():
 
     while True:
         clear_screen()
-        print_header("🔹 [8] Dar baixa em parcelas de um contrato", "Atualize o número de parcelas pagas de um contrato")
+        print_header("🔹 [11] Dar baixa em parcelas de um contrato", "Atualize o número de parcelas pagas de um contrato")
         
         query = input("➡️ Digite o nome (ou parte do nome) do titular: ").strip()
         if query == r"\c":
@@ -22,7 +22,7 @@ def increment_installments_paid_view():
             continue
 
         clear_screen()
-        print_header("🔹 [8] Dar baixa em parcelas de um contrato", "Atualize o número de parcelas pagas de um contrato")
+        print_header("🔹 [11] Dar baixa em parcelas de um contrato", "Atualize o número de parcelas pagas de um contrato")
         print("\n📋 Titulares encontrados:")
         for holder in holders:
             print(f"[{holder.id}] {holder.name}")
@@ -54,7 +54,7 @@ def increment_installments_paid_view():
             return
 
         clear_screen()
-        print_header("🔹 [8] Dar baixa em parcelas de um contrato", f"Titular selecionado: {selected_holder.name}")
+        print_header("🔹 [11] Dar baixa em parcelas de um contrato", f"Titular selecionado: {selected_holder.name}")
         print(f"\n📄 Contratos do titular {selected_holder.name}:")
         for c in contracts:
             print(f"[{c.id}] Plano: {c.plan_name} - R$ {c.monthly_price:.2f} - {c.installments_paid} parcelas pagas")
@@ -79,7 +79,7 @@ def increment_installments_paid_view():
             continue
 
         clear_screen()
-        print_header("🔹 [8] Dar baixa em parcelas de um contrato", f"Titular: {selected_holder.name} - Contrato ID: {selected_contract.id}")
+        print_header("🔹 [11] Dar baixa em parcelas de um contrato", f"Titular: {selected_holder.name} - Contrato ID: {selected_contract.id}")
         print(f"\n✅ Parcelas pagas atualmente: {selected_contract.installments_paid}")
 
         raw_to_add = input("\n➡️ Quantas parcelas deseja adicionar? ").strip()

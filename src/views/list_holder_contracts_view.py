@@ -9,7 +9,7 @@ from helpers.graphics import clear_screen, print_header
 def list_holder_contracts_view():
     while True:
         clear_screen()
-        print_header("🔹 [7] Listar contratos de um titular", "Visualize os contratos ativos de um titular.")
+        print_header("🔹 [9] Listar contratos de um titular", "Visualize os contratos ativos de um titular.")
 
         query = input("➡️ Digite o nome (ou parte do nome) do titular: ").strip()
         if query == r"\c":
@@ -24,7 +24,7 @@ def list_holder_contracts_view():
             continue
 
         clear_screen()
-        print_header("🔹 [7] Listar contratos de um titular", "Titulares encontrados:")
+        print_header("🔹 [9] Listar contratos de um titular", "Titulares encontrados:")
 
         print("\n📋 Titulares encontrados:")
         for holder in holders:
@@ -52,7 +52,7 @@ def list_holder_contracts_view():
         contracts = Contract.list_by_holder(holder_id)
 
         clear_screen()
-        print_header("🔹 [7] Listar contratos de um titular", f"Contratos de {selected_holder.name}:")
+        print_header("🔹 [9] Listar contratos de um titular", f"Contratos de {selected_holder.name}:")
 
         print(f"\n📄 Contratos de {selected_holder.name}:")
         if not contracts:

@@ -8,7 +8,7 @@ from helpers.graphics import clear_screen, print_header
 
 def list_holders_in_arrears_view():
     clear_screen()
-    print_header("🔹 [11] Listar titulares em atraso", "Visualize titulares com parcelas em atraso por plano.")
+    print_header("🔹 [10] Listar titulares em atraso", "Visualize titulares com parcelas em atraso por plano.")
 
     plans = Plan.list_all()
     if not plans:
