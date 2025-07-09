@@ -16,11 +16,6 @@ def list_holders_view():
             #input("Pressione Enter para continuar...")
             return
 
-        if not query:
-            print("⚠️ Por favor, digite algo para pesquisar.")
-            input("Pressione Enter para tentar novamente...")
-            continue
-
         holders = Holder.search_by_name(query)
 
         if not holders:

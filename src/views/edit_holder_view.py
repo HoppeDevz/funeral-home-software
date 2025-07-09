@@ -64,6 +64,13 @@ def edit_holder_view():
             else:
                 print("❌ CPF inválido. Mantendo o valor atual.")
 
+        new_rg = input(f"➡️ Novo RG (atual: {selected_holder.rg}): ").strip()
+        if new_rg == r"\c":
+            print("\n✖️ Operação cancelada.")
+            return
+        if new_rg:
+            selected_holder.rg = new_rg
+    
         new_birthdate = input(f"➡️ Nova data de nascimento (dd/mm/aaaa) (atual: {selected_holder.birth_date}): ").strip()
         if new_birthdate == r"\c":
             print("\n✖️ Operação cancelada.")

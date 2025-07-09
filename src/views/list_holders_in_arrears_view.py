@@ -1,4 +1,8 @@
+import os
+
 from datetime import datetime
+from pathlib import Path
+from openpyxl import Workbook
 
 from models.plan import Plan
 from models.contract import Contract
@@ -48,15 +52,11 @@ def list_holders_in_arrears_view():
     holders_in_arrears = []
 
     for contract in contracts:
-        # Parse creation_date dd/mm/yyyy para datetime
         creation_dt = datetime.strptime(contract.creation_date, "%d/%m/%Y")
 
-        # Calcular quantas parcelas deveriam estar pagas até hoje
         months_passed = (today.year - creation_dt.year) * 12 + (today.month - creation_dt.month)
-        # Adiciona +1 se o dia do pagamento já passou no mês atual
         if today.day >= contract.payment_day:
             months_passed += 1
-        # Limita ao total de parcelas do plano
         months_passed = min(months_passed, selected_plan.installment_count)
 
         if contract.installments_paid < months_passed:
@@ -74,13 +74,36 @@ def list_holders_in_arrears_view():
     if not holders_in_arrears:
         print("Nenhum titular em atraso encontrado.")
     else:
-        for idx, entry in enumerate(holders_in_arrears, 1):
+        # Criar planilha Excel
+        wb = Workbook()
+        ws = wb.active
+        ws.title = "Em Atraso"
+
+        ws.append([
+            "Nome do Titular", "Contrato ID", "Parcelas Pagas",
+            "Esperadas", "Data de Criação", "Dia do Pagamento"
+        ])
+
+        for entry in holders_in_arrears:
             h = entry["holder"]
             c = entry["contract"]
-            print(f"[{idx}] {h.name} (Contrato ID: {c.id})")
-            print(f"    Parcelas pagas: {entry['actual_paid']} / Esperadas até hoje: {entry['expected_paid']}")
-            print(f"    Data de criação: {c.creation_date}")
-            print(f"    Dia do pagamento: {c.payment_day}")
-            print()
+            ws.append([
+                h.name,
+                c.id,
+                entry["actual_paid"],
+                entry["expected_paid"],
+                c.creation_date,
+                c.payment_day
+            ])
 
-    input("Pressione Enter para continuar...")
+        documents_path = Path.home() / "Documents"
+        filename = f"Titulares_em_Atraso_{selected_plan.name}_{today.strftime('%Y-%m-%d')}.xlsx"
+        output_path = documents_path / filename
+
+        wb.save(output_path)
+        os.startfile(output_path)
+
+        print(f"✔️ {len(holders_in_arrears)} titulares em atraso encontrados.")
+        print(f"📁 Planilha gerada com sucesso: {output_path}")
+
+    input("\nPressione Enter para continuar...")

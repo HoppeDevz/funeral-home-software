@@ -1,9 +1,11 @@
-import fitz
 import os
+import sys
+import fitz
 
-from datetime import datetime
 from pathlib import Path
+from datetime import datetime
 
+from models.dependent import Dependent, RELATION_MAP
 from models.holder import Holder
 from models.contract import Contract
 from models.plan import Plan
@@ -13,12 +15,14 @@ from helpers.graphics import clear_screen, print_header
 def print_pdf(path_pdf):
     os.startfile(path_pdf)
 
-def fill_template_pdf(holder, plan, contract) -> str:
+def fill_template_pdf(holder, dependents, plan, contract) -> str:
 
-    # Caminho do diretório do script atual
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    template_path = os.path.join(base_dir, "..", "data", "front.pdf")
-    template_back = os.path.join(base_dir, "..", "data", "back.pdf")
+    # current_dir = os.path.dirname(os.path.abspath(__file__))
+    # template_path = os.path.join(current_dir, "..", "data", "front.pdf")
+    # template_back = os.path.join(current_dir, "..", "data", "back.pdf")
+
+    template_path = os.path.join(sys._MEIPASS, "data", "front.pdf")
+    template_back = os.path.join(sys._MEIPASS, "data", "back.pdf")
 
     # Gera nome baseado na data e hora atual
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
@@ -45,18 +49,48 @@ def fill_template_pdf(holder, plan, contract) -> str:
     page.insert_text((450, 96), f"{contract.id}", fontsize=18)
     page.insert_text((365, 128), f"{plan.name}", fontsize=18)
 
-    page.insert_text((91, 389), f"Valor da mensalidade: R$ {plan.monthly_price:.2f}", fontsize=10)
-    page.insert_text((91, 408), f"Número de parcelas: {plan.installment_count}", fontsize=10)
-    page.insert_text((91, 426), f"Dia de vencimento: {contract.payment_day}", fontsize=10)
+    # page.insert_text((91, 900), f"Valor da mensalidade: R$ {plan.monthly_price:.2f}", fontsize=10)
+    # page.insert_text((91, 408), f"Número de parcelas: {plan.installment_count}", fontsize=10)
+    # page.insert_text((91, 426), f"Dia de vencimento: {contract.payment_day}", fontsize=10)
+
+    for dependent in dependents:
+
+        if dependent.relation == 1:
+            page.insert_text((110, 210), f"{dependent.name}", fontsize=10)
+
+        if dependent.relation == 2:
+            page.insert_text((115, 228), f"{dependent.name}", fontsize=10)
+
+        if dependent.relation == 3:
+            page.insert_text((130, 246), f"{dependent.name}", fontsize=10)
+
+        if dependent.relation == 4:
+            page.insert_text((130, 265), f"{dependent.name}", fontsize=10)
+
+        if dependent.relation == 5:
+            page.insert_text((150, 283), f"{dependent.name}", fontsize=10)
+
+        if dependent.relation == 6:
+            page.insert_text((130, 300), f"{dependent.name}", fontsize=10)
+
+    others = [dependent.name for dependent in dependents if dependent.relation == 0]
+    others_str = ", ".join(others)
+
+    if others_str:
+        page.insert_text((92, 315), f"Outros dependentes: {others_str}", fontsize=10)
 
     # Salva frente temporária
-    temp_path = os.path.join(base_dir, "contrato_frente_temp.pdf")
+    temp_path = os.path.join(sys._MEIPASS, "contrato_frente_temp.pdf")
+    #temp_path = os.path.join(current_dir, "contrato_frente_temp.pdf")
     doc.save(temp_path)
     doc.close()
 
     # Junta frente + verso
     front = fitz.open(temp_path)
     back = fitz.open(template_back)
+
+    page_back = back[0]
+    page_back.insert_text((315, 273), f"{plan.monthly_price:.2f}", fontsize=10)
 
     final = fitz.open()
     final.insert_pdf(front)
@@ -146,8 +180,9 @@ def print_contract_view():
             input("Pressione Enter para tentar novamente...")
             continue
 
+        dependents = Dependent.list_by_holder(selected_holder.id)
         plan = Plan.get_by_id(selected_contract.plan_id)
-        output_path = fill_template_pdf(selected_holder, plan, selected_contract)
+        output_path = fill_template_pdf(selected_holder, dependents, plan, selected_contract)
 
         print_pdf(output_path)
         
