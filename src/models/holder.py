@@ -97,8 +97,7 @@ class Holder:
         ), commit=True)
         db.close()
 
-    @staticmethod
-    def delete(holder_id):
+    def delete(self):
         db = Database()
-        db.execute("DELETE FROM holder WHERE id = ?", (holder_id,), commit=True)
+        db.execute("DELETE FROM holder WHERE id = ?", (self.id,), commit=True)
         db.close()

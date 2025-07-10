@@ -110,20 +110,22 @@ def create_contract_view():
         else:
             creation_date = datetime.now().strftime("%d/%m/%Y")
 
-        parcels_paid_input = input("➡️ Parcelas pagas (inicialmente 0): ").strip()
+        parcels_paid_input = input("➡️ Parcelas pagas [Enter para 0]: ").strip()
         if parcels_paid_input == r"\c":
             print("\n✖️ Operação cancelada")
-            #input("Pressione Enter para continuar...")
             return
 
-        try:
-            parcels_paid = int(parcels_paid_input)
-            if parcels_paid < 0:
-                raise ValueError()
-        except ValueError:
-            print("❌ Número de parcelas pagas inválido.")
-            input("Pressione Enter para tentar novamente...")
-            continue
+        if not parcels_paid_input:
+            parcels_paid = 0
+        else:
+            try:
+                parcels_paid = int(parcels_paid_input)
+                if parcels_paid < 0:
+                    raise ValueError()
+            except ValueError:
+                print("❌ Número de parcelas pagas inválido.")
+                input("Pressione Enter para tentar novamente...")
+                continue
 
         clear_screen()
         print_header("🔹 [4] Criar contrato", "Confirme os dados abaixo")

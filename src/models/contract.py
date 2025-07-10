@@ -107,8 +107,7 @@ class Contract:
         """, (self.holder_id, self.plan_id, self.payment_day, self.creation_date, self.installments_paid, self.id), commit=True)
         db.close()
 
-    @staticmethod
-    def delete(contract_id):
+    def delete(self):
         db = Database()
-        db.execute("DELETE FROM contract WHERE id = ?", (contract_id,), commit=True)
+        db.execute("DELETE FROM contract WHERE id = ?", (self.id,), commit=True)
         db.close()

@@ -20,6 +20,10 @@ from views.edit_holder_view import edit_holder_view
 
 from views.print_contract_view import print_contract_view
 
+from views.delete_holder_view import delete_holder_view
+from views.delete_dependent_view import delete_dependent_view
+from views.delete_contract_view import delete_contract_view
+from views.delete_plan_view import delete_plan_view
 
 class View:
     @staticmethod
@@ -43,6 +47,10 @@ class View:
             print("║ {:<2} - {:<54}║".format("12",      "Registrar uso de contrato por dependente"))
             print("║ {:<2} - {:<54}║".format("13",      "Registrar uso de contrato por titular"))
             print("║ {:<2} - {:<54}║".format("14",      "Imprimir contrato"))
+            print("║ {:<2} - {:<54}║".format("15",      "Excluir titular"))
+            print("║ {:<2} - {:<54}║".format("16",      "Excluir dependente"))
+            print("║ {:<2} - {:<54}║".format("17",      "Excluir contrato"))
+            print("║ {:<2} - {:<54}║".format("18",      "Excluir plano"))
             #print("║ {:<2} - {:<54}║".format("0",   "Sair"))
             print("╚" + "═" * 60 + "╝")
 
@@ -76,6 +84,14 @@ class View:
                 register_contract_usage_by_a_holder_view()
             elif option == '14':
                 print_contract_view()
+            elif option == '15':
+                delete_holder_view()
+            elif option == '16':
+                delete_dependent_view()
+            elif option == '17':
+                delete_contract_view()
+            elif option == '18':
+                delete_plan_view()
             
             else:
                 print("\nOpção inválida, tente novamente.")

@@ -67,8 +67,7 @@ class Plan:
         """, (self.name, self.monthly_price, self.installment_count, self.id), commit=True)
         db.close()
 
-    @staticmethod
-    def delete(plan_id):
+    def delete(self):
         db = Database()
-        db.execute("DELETE FROM plan WHERE id = ?", (plan_id,), commit=True)
+        db.execute("DELETE FROM plan WHERE id = ?", (self.id,), commit=True)
         db.close()
