@@ -1,6 +1,7 @@
 import os
 
-from datetime import datetime
+from datetime import date, datetime
+from calendar import monthrange
 from pathlib import Path
 from openpyxl import Workbook
 
@@ -9,6 +10,52 @@ from models.contract import Contract
 from models.holder import Holder
 
 from helpers.graphics import clear_screen, print_header
+
+def calculate_due_installments(creation_date: date, payment_day: int, today: date, paid_installments: int) -> int:
+    # Garante que today seja um objeto date (caso venha como datetime)
+    if isinstance(today, datetime):
+        today = today.date()
+
+    if today < creation_date:
+        return 0
+
+    # Define o primeiro vencimento
+    if creation_date.day <= payment_day:
+        try:
+            first_due_date = creation_date.replace(day=payment_day)
+        except ValueError:
+            # Se o dia não existe (ex: dia 31 em fevereiro), ajusta para o último dia do mês
+            last_day = monthrange(creation_date.year, creation_date.month)[1]
+            first_due_date = creation_date.replace(day=last_day)
+    else:
+        # Próximo mês
+        year = creation_date.year + (creation_date.month // 12)
+        month = (creation_date.month % 12) + 1
+        try:
+            first_due_date = date(year, month, payment_day)
+        except ValueError:
+            last_day = monthrange(year, month)[1]
+            first_due_date = date(year, month, last_day)
+
+    # Conta parcelas vencidas até hoje
+    count = 0
+    current_due = first_due_date
+
+    while current_due <= today:
+        count += 1
+        # Próximo mês
+        year = current_due.year + (current_due.month // 12)
+        month = (current_due.month % 12) + 1
+        try:
+            current_due = date(year, month, payment_day)
+        except ValueError:
+            last_day = monthrange(year, month)[1]
+            current_due = date(year, month, last_day)
+
+    # Parcelas devidas = vencidas - pagas
+    due_installments = count - paid_installments
+    return max(due_installments, 0)
+
 
 def list_holders_in_arrears_view():
     clear_screen()
@@ -52,19 +99,22 @@ def list_holders_in_arrears_view():
     holders_in_arrears = []
 
     for contract in contracts:
-        creation_dt = datetime.strptime(contract.creation_date, "%d/%m/%Y")
 
-        months_passed = (today.year - creation_dt.year) * 12 + (today.month - creation_dt.month)
-        if today.day >= contract.payment_day:
-            months_passed += 1
-        months_passed = min(months_passed, selected_plan.installment_count)
+        creation_dt = datetime.strptime(contract.creation_date, "%d/%m/%Y").date()
 
-        if contract.installments_paid < months_passed:
+        due_installments = calculate_due_installments(
+            creation_date=creation_dt,
+            payment_day=contract.payment_day,
+            today=today,
+            paid_installments=contract.installments_paid
+        )
+
+        if due_installments > 0:
             holder = Holder.get_by_id(contract.holder_id)
             holders_in_arrears.append({
                 "holder": holder,
                 "contract": contract,
-                "expected_paid": months_passed,
+                "expected_paid": due_installments,
                 "actual_paid": contract.installments_paid,
             })
 

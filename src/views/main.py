@@ -51,7 +51,6 @@ class View:
             print("║ {:<2} - {:<54}║".format("16",      "Excluir dependente"))
             print("║ {:<2} - {:<54}║".format("17",      "Excluir contrato"))
             print("║ {:<2} - {:<54}║".format("18",      "Excluir plano"))
-            #print("║ {:<2} - {:<54}║".format("0",   "Sair"))
             print("╚" + "═" * 60 + "╝")
 
             option = input("\nEscolha uma opção: ").strip()
