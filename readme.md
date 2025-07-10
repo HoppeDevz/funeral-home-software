@@ -1,6 +1,9 @@
 # 💀 Sistema para Funerária – Estrutura de Dados
 
-## 🧩 Entidades
+## Build command
+`pyinstaller --onefile -n VCD --add-data "data;data" main.py`
+
+## Entidades
 
 ### Titular
 - id

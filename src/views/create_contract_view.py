@@ -94,7 +94,21 @@ def create_contract_view():
             input("Pressione Enter para tentar novamente...")
             continue
 
-        creation_date = datetime.now().strftime("%d/%m/%Y")
+        creation_input = input("➡️ Data de criação (dd/mm/aaaa) [Enter para hoje]: ").strip()
+        if creation_input == r"\c":
+            print("\n✖️ Operação cancelada")
+            return
+
+        if creation_input:
+            try:
+                creation_dt = datetime.strptime(creation_input, "%d/%m/%Y")
+                creation_date = creation_dt.strftime("%d/%m/%Y")
+            except ValueError:
+                print("❌ Data inválida. Use o formato dd/mm/aaaa.")
+                input("Pressione Enter para tentar novamente...")
+                continue
+        else:
+            creation_date = datetime.now().strftime("%d/%m/%Y")
 
         parcels_paid_input = input("➡️ Parcelas pagas (inicialmente 0): ").strip()
         if parcels_paid_input == r"\c":
