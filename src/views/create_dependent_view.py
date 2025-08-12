@@ -9,7 +9,7 @@ def create_dependent_view():
 
         query = input("➡️ Digite o nome (ou parte do nome) do titular: ").strip()
         if query == r"\c":
-            print("\n✖️ Operação cancelada")
+            print("\n✖️ Operação cancelada.")
             return
 
         holders = Holder.search_by_name(query)
@@ -26,7 +26,7 @@ def create_dependent_view():
 
         holder_id_input = input("\n➡️ Digite o ID do titular: ").strip()
         if holder_id_input == r"\c":
-            print("\n✖️ Operação cancelada")
+            print("\n✖️ Operação cancelada.")
             return
 
         try:
@@ -42,39 +42,48 @@ def create_dependent_view():
             input("Pressione Enter para tentar novamente...")
             continue
 
-        clear_screen()
-        print_header("🔹 [2] Criar dependente", f"TITULAR: {selected_holder.name}")
+        while True:
+            clear_screen()
+            print_header("🔹 [2] Criar dependente", f"TITULAR: {selected_holder.name}")
 
-        print("\n➡️ Selecione o grau de parentesco:")
-        for code, label in RELATION_MAP.items():
-            print(f"[{code}] {label}")
+            print("\n➡️ Selecione o grau de parentesco:")
+            for code, label in RELATION_MAP.items():
+                print(f"[{code}] {label}")
 
-        relation_input = input("\n➡️ Digite o número correspondente ao parentesco: ").strip()
-        if relation_input == r"\c":
-            print("\n✖️ Operação cancelada")
-            return
+            relation_input = input("\n➡️ Digite o número correspondente ao parentesco: ").strip()
+            if relation_input == r"\c":
+                print("\n✖️ Operação cancelada.")
+                return
 
-        try:
-            relation = int(relation_input)
-            if relation not in RELATION_MAP:
-                raise ValueError
-        except ValueError:
-            print("❌ Parentesco inválido.")
-            input("Pressione Enter para tentar novamente...")
-            continue
+            try:
+                relation = int(relation_input)
+                if relation not in RELATION_MAP:
+                    raise ValueError
+            except ValueError:
+                print("❌ Parentesco inválido.")
+                input("Pressione Enter para tentar novamente...")
+                continue
 
-        name = input("\n➡️ Nome completo do dependente: ").strip()
-        if name == r"\c":
-            print("\n✖️ Operação cancelada")
-            return
-        if not name:
-            print("❌ Nome não pode ser vazio.")
-            input("Pressione Enter para tentar novamente...")
-            continue
+            name = input("\n➡️ Nome completo do dependente: ").strip()
+            if name == r"\c":
+                print("\n✖️ Operação cancelada.")
+                return
+            if not name:
+                print("❌ Nome não pode ser vazio.")
+                input("Pressione Enter para tentar novamente...")
+                continue
 
-        dependent = Dependent(name=name, holder_id=holder_id, relation=relation)
-        dependent.create()
+            dependent = Dependent(name=name, holder_id=holder_id, relation=relation)
+            dependent.create()
 
-        print(f"\n✔️ Dependente \"{name}\" ({RELATION_MAP[relation]}) vinculado ao titular {selected_holder.name} com sucesso! ID: {dependent.id}")
-        input("Pressione Enter para continuar...")
-        break
+            print(f"\n✔️ Dependente \"{name}\" ({RELATION_MAP[relation]}) vinculado ao titular {selected_holder.name} com sucesso! ID: {dependent.id}")
+
+            # Pergunta se o usuário deseja criar outro dependente
+            continue_input = input("\n➡️ Deseja cadastrar outro dependente? (s/n): ").strip().lower()
+            if continue_input == 'n':
+                print("✔️ Operação concluída.")
+                input("Pressione Enter para voltar ao menu...")
+                return
+            elif continue_input != 's':
+                print("✖️ Resposta inválida. Opção cancelada.")
+                return

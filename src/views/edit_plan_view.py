@@ -19,8 +19,8 @@ def edit_plan_view():
             continue
 
         print("\n📋 Planos encontrados:")
-        for plan in plans:
-            print(f"[{plan.id}] {plan.name} - R$ {plan.monthly_price:.2f} - {plan.installment_count} parcelas")
+        for index, plan in enumerate(plans):
+            print(f"[{index + 1}] {plan.name} - R$ {plan.monthly_price:.2f} - {plan.installment_count} parcelas")
 
         plan_id_input = input("\n➡️ Digite o ID do plano que deseja editar: ").strip()
         if plan_id_input == r"\c":
@@ -29,13 +29,20 @@ def edit_plan_view():
             return
 
         try:
+
             plan_id = int(plan_id_input)
+
+            if plan_id <= 0 or plan_id > len(plans):
+                print("\n❌ ID deve ser maior que 0 e menor ou igual a", len(plans))
+                input("Pressione Enter para tentar novamente...")
+                continue
+
         except ValueError:
             print("❌ ID inválido.")
             input("Pressione Enter para tentar novamente...")
             continue
 
-        selected_plan = next((p for p in plans if p.id == plan_id), None)
+        selected_plan = plans[plan_id - 1] #next((p for p in plans if p.id == plan_id), None)
         if not selected_plan:
             print("❌ Plano não encontrado na lista.")
             input("Pressione Enter para tentar novamente...")

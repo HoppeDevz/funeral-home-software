@@ -19,8 +19,8 @@ def delete_dependent_view():
             continue
 
         print("\n📋 Titulares encontrados:")
-        for h in holders:
-            print(f"[{h.id}] {h.name}")
+        for index, holder in enumerate(holders):
+            print(f"[{index + 1}] {holder.name} - CPF: {holder.cpf}")
 
         holder_id_input = input("\n➡️ Digite o ID do titular: ").strip()
         if holder_id_input == r"\c":
@@ -28,13 +28,20 @@ def delete_dependent_view():
             return
 
         try:
+
             holder_id = int(holder_id_input)
+        
+            if holder_id <= 0 or holder_id > len(holders):
+                print("\n❌ ID deve ser maior que 0 e menor ou igual a", len(holders))
+                input("Pressione Enter para tentar novamente...")
+                continue
+
         except ValueError:
             print("❌ ID inválido.")
             input("Pressione Enter para tentar novamente...")
             continue
 
-        selected_holder = next((h for h in holders if h.id == holder_id), None)
+        selected_holder = holders[holder_id - 1] #next((h for h in holders if h.id == holder_id), None)
         if not selected_holder:
             print("❌ Titular não encontrado.")
             input("Pressione Enter para tentar novamente...")
@@ -49,8 +56,8 @@ def delete_dependent_view():
         clear_screen()
         print_header(f"🗑️ Dependentes de {selected_holder.name}", "Escolha qual deseja excluir.")
 
-        for d in dependents:
-            print(f"[{d.id}] {d.name} (Relação: {d.relation})")
+        for index, dependent in enumerate(dependents):
+            print(f"[{index + 1}] {dependent.name} (Relação: {dependent.relation})")
 
         dependent_id_input = input("\n➡️ Digite o ID do dependente a ser excluído: ").strip()
         if dependent_id_input == r"\c":
@@ -58,13 +65,20 @@ def delete_dependent_view():
             return
 
         try:
+
             dependent_id = int(dependent_id_input)
+
+            if dependent_id <= 0 or dependent_id > len(dependents):
+                print("\n❌ ID deve ser maior que 0 e menor ou igual a", len(dependents))
+                input("Pressione Enter para tentar novamente...")
+                continue
+
         except ValueError:
             print("❌ ID inválido.")
             input("Pressione Enter para tentar novamente...")
             continue
 
-        selected_dependent = next((d for d in dependents if d.id == dependent_id), None)
+        selected_dependent = dependents[dependent_id - 1] #next((d for d in dependents if d.id == dependent_id), None)
         if not selected_dependent:
             print("❌ Dependente não encontrado.")
             input("Pressione Enter para tentar novamente...")

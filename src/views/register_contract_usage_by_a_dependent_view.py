@@ -28,8 +28,8 @@ def register_contract_usage_by_a_dependent_view():
         clear_screen()
         print_header("🔹 [12] Registrar uso de contrato por dependente", "Titulares encontrados:")
 
-        for holder in holders:
-            print(f"[{holder.id}] {holder.name}")
+        for index, holder in enumerate(holders):
+            print(f"[{index + 1}] {holder.name}")
 
         raw_holder_id = input("\n➡️ Digite o ID do titular: ").strip()
         if raw_holder_id == r"\c":
@@ -38,13 +38,20 @@ def register_contract_usage_by_a_dependent_view():
             return
 
         try:
+
             holder_id = int(raw_holder_id)
+
+            if holder_id <= 0 or holder_id > len(holders):
+                print("\n❌ ID deve ser maior que 0 e menor ou igual a", len(holders))
+                input("Pressione Enter para tentar novamente...")
+                continue
+
         except ValueError:
             print("\n❌ ID inválido.")
             input("Pressione Enter para tentar novamente...")
             continue
 
-        selected_holder = next((h for h in holders if h.id == holder_id), None)
+        selected_holder = holders[holder_id - 1] #next((h for h in holders if h.id == holder_id), None)
         if not selected_holder:
             print("\n❌ Titular não encontrado na lista.")
             input("Pressione Enter para tentar novamente...")
@@ -59,8 +66,8 @@ def register_contract_usage_by_a_dependent_view():
         clear_screen()
         print_header("🔹 [12] Registrar uso de contrato por dependente", f"Dependentes de {selected_holder.name}:")
 
-        for d in dependents:
-            print(f"[{d.id}] {d.name}")
+        for index, dependent in enumerate(dependents):
+            print(f"[{index + 1}] {dependent.name}")
 
         raw_dependent_id = input("\n➡️ Digite o ID do dependente: ").strip()
         if raw_dependent_id == r"\c":
@@ -69,13 +76,20 @@ def register_contract_usage_by_a_dependent_view():
             return
 
         try:
+            
             dependent_id = int(raw_dependent_id)
+
+            if dependent_id <= 0 or dependent_id > len(dependents):
+                print("\n❌ ID deve ser maior que 0 e menor ou igual a", len(dependents))
+                input("Pressione Enter para tentar novamente...")
+                continue
+
         except ValueError:
             print("\n❌ ID inválido.")
             input("Pressione Enter para tentar novamente...")
             continue
 
-        selected_dependent = next((d for d in dependents if d.id == dependent_id), None)
+        selected_dependent = dependents[dependent_id - 1] #next((d for d in dependents if d.id == dependent_id), None)
         if not selected_dependent:
             print("\n❌ Dependente não encontrado na lista.")
             input("Pressione Enter para tentar novamente...")
@@ -89,26 +103,26 @@ def register_contract_usage_by_a_dependent_view():
 
         # Mapear contratos usados por titular ou dependente
         contract_usage_map = {}
-        for contract in contracts:
+        for index, contract in enumerate(contracts):
             usage_holder = UsageContractHolder.list_by_contract(contract.id)
             usage_dependents = UsageContractDependent.list_by_contract(contract.id)
 
             if usage_holder:
-                contract_usage_map[contract.id] = f"Já usado pelo titular {usage_holder.holder_name}"
+                contract_usage_map[index] = f"Já usado pelo titular {usage_holder.holder_name}"
             elif usage_dependents:
-                contract_usage_map[contract.id] = f"Já usado por dependente"
+                contract_usage_map[index] = f"Já usado por dependente"
             else:
-                contract_usage_map[contract.id] = None
+                contract_usage_map[index] = None
 
         clear_screen()
         print_header("🔹 [12] Registrar uso de contrato por dependente", f"Contratos do titular {selected_holder.name}:")
 
-        for c in contracts:
-            usage_msg = contract_usage_map.get(c.id)
+        for index, contract in enumerate(contracts):
+            usage_msg = contract_usage_map.get(index)
             if usage_msg:
-                print(f"[{c.id}] Plano: {c.plan_name} | {usage_msg}")
+                print(f"[{index + 1}] Plano: {contract.plan_name} | {usage_msg}")
             else:
-                print(f"[{c.id}] Plano: {c.plan_name}")
+                print(f"[{index + 1}] Plano: {contract.plan_name}")
 
         while True:
             raw_contract_id = input("\n➡️ Digite o ID do contrato: ").strip()
@@ -118,20 +132,23 @@ def register_contract_usage_by_a_dependent_view():
                 return
 
             try:
+                
                 contract_id = int(raw_contract_id)
+
+                if contract_id <= 0 or contract_id > len(contracts):
+                    print("\n❌ ID deve ser maior que 0 e menor ou igual a", len(contracts))
+                    input("Pressione Enter para tentar novamente...")
+                    continue
+
             except ValueError:
                 print("\n❌ ID inválido.")
                 continue
 
-            if contract_id not in [c.id for c in contracts]:
-                print("\n❌ Contrato não encontrado na lista.")
-                continue
-
-            if contract_usage_map.get(contract_id) is not None:
+            if contract_usage_map.get(contract_id - 1) is not None:
                 print("\n❌ Este contrato já foi usado e não pode ser selecionado.")
                 continue
 
-            selected_contract = next(c for c in contracts if c.id == contract_id)
+            selected_contract = contracts[contract_id - 1] #next(c for c in contracts if c.id == contract_id)
             break
 
         while True:

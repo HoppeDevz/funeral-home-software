@@ -24,8 +24,8 @@ def list_holder_dependents_view():
         print_header("🔹 [8] Listar dependentes de um titular", "Titulares encontrados:")
 
         print("\n📋 Titulares encontrados:")
-        for holder in holders:
-            print(f"[{holder.id}] {holder.name}")
+        for index, holder in enumerate(holders):
+            print(f"[{index + 1}] {holder.name} - CPF: {holder.cpf}")
 
         raw_holder_id = input("\n➡️ Digite o ID do titular: ").strip()
         if raw_holder_id == r"\c":
@@ -34,13 +34,20 @@ def list_holder_dependents_view():
             return
 
         try:
+
             holder_id = int(raw_holder_id)
+
+            if holder_id <= 0 or holder_id > len(holders):
+                print("\n❌ ID deve ser maior que 0 e menor ou igual a", len(holders))
+                input("Pressione Enter para tentar novamente...")
+                continue
+
         except ValueError:
             print("❌ ID inválido.")
             input("Pressione Enter para tentar novamente...")
             continue
 
-        selected_holder = next((h for h in holders if h.id == holder_id), None)
+        selected_holder = holders[holder_id - 1] #next((h for h in holders if h.id == holder_id), None)
         if not selected_holder:
             print("❌ Titular não encontrado na lista.")
             input("Pressione Enter para tentar novamente...")

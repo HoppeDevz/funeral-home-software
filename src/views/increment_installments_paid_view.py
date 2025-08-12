@@ -24,8 +24,8 @@ def increment_installments_paid_view():
         clear_screen()
         print_header("🔹 [11] Dar baixa em parcelas de um contrato", "Atualize o número de parcelas pagas de um contrato")
         print("\n📋 Titulares encontrados:")
-        for holder in holders:
-            print(f"[{holder.id}] {holder.name}")
+        for index, holder in enumerate(holders):
+            print(f"[{index + 1}] {holder.name}")
 
         raw_holder_id = input("\n➡️ Digite o ID do titular: ").strip()
         if raw_holder_id == r"\c":
@@ -34,13 +34,20 @@ def increment_installments_paid_view():
             return
 
         try:
+
             holder_id = int(raw_holder_id)
+
+            if holder_id <= 0 or holder_id > len(holders):
+                print("\n❌ ID deve ser maior que 0 e menor ou igual a", len(holders))
+                input("Pressione Enter para tentar novamente...")
+                continue
+
         except ValueError:
             print("\n❌ ID inválido.")
             input("Pressione Enter para tentar novamente...")
             continue
 
-        selected_holder = next((h for h in holders if h.id == holder_id), None)
+        selected_holder = holders[holder_id - 1] #next((h for h in holders if h.id == holder_id), None)
         if not selected_holder:
             print("\n❌ Titular não encontrado na lista.")
             input("Pressione Enter para tentar novamente...")
@@ -56,8 +63,8 @@ def increment_installments_paid_view():
         clear_screen()
         print_header("🔹 [11] Dar baixa em parcelas de um contrato", f"Titular selecionado: {selected_holder.name}")
         print(f"\n📄 Contratos do titular {selected_holder.name}:")
-        for c in contracts:
-            print(f"[{c.id}] Plano: {c.plan_name} - R$ {c.monthly_price:.2f} - {c.installments_paid} parcelas pagas")
+        for index, contract in enumerate(contracts):
+            print(f"[{index + 1}] Plano: {contract.plan_name} - R$ {contract.monthly_price:.2f} - {contract.installments_paid} parcelas pagas")
 
         raw_contract_id = input("\n➡️ Digite o ID do contrato: ").strip()
         if raw_contract_id == r"\c":
@@ -66,13 +73,20 @@ def increment_installments_paid_view():
             return
 
         try:
+
             contract_id = int(raw_contract_id)
+
+            if contract_id <= 0 or contract_id > len(contracts):
+                print("\n❌ ID deve ser maior que 0 e menor ou igual a", len(contracts))
+                input("Pressione Enter para tentar novamente...")
+                continue
+
         except ValueError:
             print("\n❌ ID inválido.")
             input("Pressione Enter para tentar novamente...")
             continue
 
-        selected_contract = next((c for c in contracts if c.id == contract_id), None)
+        selected_contract = contracts[contract_id - 1] #next((c for c in contracts if c.id == contract_id), None)
         if not selected_contract:
             print("\n❌ Contrato não encontrado na lista.")
             input("Pressione Enter para tentar novamente...")

@@ -68,8 +68,8 @@ def list_holders_in_arrears_view():
         return
 
     print("📋 Planos disponíveis:")
-    for p in plans:
-        print(f"[{p.id}] {p.name} - {p.installment_count} parcelas - R$ {p.monthly_price:.2f}")
+    for index, plan in enumerate(plans):
+        print(f"[{index + 1}] {plan.name} - {plan.installment_count} parcelas - R$ {plan.monthly_price:.2f}")
 
     plan_id_input = input("\n➡️ Digite o ID do plano para verificar atraso: ").strip()
     if plan_id_input == r"\c":
@@ -77,13 +77,20 @@ def list_holders_in_arrears_view():
         return
 
     try:
+
         plan_id = int(plan_id_input)
+
+        if plan_id <= 0 or plan_id > len(plans):
+            print("\n❌ ID deve ser maior que 0 e menor ou igual a", len(plans))
+            input("Pressione Enter para continuar...")
+            return
+            
     except ValueError:
         print("❌ ID do plano inválido.")
         input("Pressione Enter para continuar...")
         return
 
-    selected_plan = next((p for p in plans if p.id == plan_id), None)
+    selected_plan = plans[plan_id] #next((p for p in plans if p.id == plan_id), None)
     if not selected_plan:
         print("❌ Plano não encontrado.")
         input("Pressione Enter para continuar...")
